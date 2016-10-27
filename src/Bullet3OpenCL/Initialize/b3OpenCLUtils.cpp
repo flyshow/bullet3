@@ -560,7 +560,7 @@ void b3OpenCLUtils_printDeviceInfo(cl_device_id device)
 	b3Printf("\t\t\t\t\t3D_MAX_WIDTH\t %u\n", info.m_image3dMaxWidth);
 	b3Printf("\t\t\t\t\t3D_MAX_HEIGHT\t %u\n", info.m_image3dMaxHeight);
 	b3Printf("\t\t\t\t\t3D_MAX_DEPTH\t %u\n", info.m_image3dMaxDepth);
-	if (info.m_deviceExtensions != 0)
+	if (*info.m_deviceExtensions != 0)
 	{
 		b3Printf("\n  CL_DEVICE_EXTENSIONS:%s\n",info.m_deviceExtensions);
 	}
@@ -618,7 +618,7 @@ cl_program b3OpenCLUtils_compileCLProgramFromString(cl_context clContext, cl_dev
 		strippedName = strip2(clFileNameForCaching,"\\");
 		strippedName = strip2(strippedName,"/");
 	
-#ifdef _WIN32
+#ifdef _MSVC_VER
 		sprintf_s(binaryFileName,B3_MAX_STRING_LENGTH,"%s/%s.%s.%s.bin",sCachedBinaryPath,strippedName, deviceName,driverVersion );
 #else
 		sprintf(binaryFileName,"%s/%s.%s.%s.bin",sCachedBinaryPath,strippedName, deviceName,driverVersion );
@@ -636,10 +636,10 @@ cl_program b3OpenCLUtils_compileCLProgramFromString(cl_context clContext, cl_dev
 
 
 		FILETIME modtimeBinary;
-		CreateDirectory(sCachedBinaryPath,0);
+		CreateDirectoryA(sCachedBinaryPath,0);
 		{
 
-			HANDLE binaryFileHandle = CreateFile(binaryFileName,GENERIC_READ,0,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
+			HANDLE binaryFileHandle = CreateFileA(binaryFileName,GENERIC_READ,0,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
 			if (binaryFileHandle ==INVALID_HANDLE_VALUE)
 			{
 				DWORD errorCode;
@@ -677,7 +677,7 @@ cl_program b3OpenCLUtils_compileCLProgramFromString(cl_context clContext, cl_dev
 
 			if (binaryFileValid)
 			{
-				HANDLE srcFileHandle = CreateFile(clFileNameForCaching,GENERIC_READ,0,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
+				HANDLE srcFileHandle = CreateFileA(clFileNameForCaching,GENERIC_READ,0,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
 
 				if (srcFileHandle==INVALID_HANDLE_VALUE)
 				{
@@ -686,7 +686,7 @@ cl_program b3OpenCLUtils_compileCLProgramFromString(cl_context clContext, cl_dev
 					{
 						char relativeFileName[1024];
 						sprintf(relativeFileName,"%s%s",prefix[i],clFileNameForCaching);
-						srcFileHandle = CreateFile(relativeFileName,GENERIC_READ,0,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
+						srcFileHandle = CreateFileA(relativeFileName,GENERIC_READ,0,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
 					}
 
 				}
@@ -765,7 +765,7 @@ cl_program b3OpenCLUtils_compileCLProgramFromString(cl_context clContext, cl_dev
 	
 	if( fileUpToDate)
 	{
-#ifdef _WIN32
+#ifdef _MSC_VER
 		FILE* file;
 		if (fopen_s(&file,binaryFileName, "rb")!=0)
 			file=0;
@@ -782,7 +782,8 @@ cl_program b3OpenCLUtils_compileCLProgramFromString(cl_context clContext, cl_dev
 			binarySize = ftell( file );
 			rewind( file );
 			binary = (char*)malloc(sizeof(char)*binarySize);
-			fread( binary, sizeof(char), binarySize, file );
+			int bytesRead;
+			bytesRead = fread( binary, sizeof(char), binarySize, file );
 			fclose( file );
 			
 			m_cpProgram = clCreateProgramWithBinary( clContext, 1,&device, &binarySize, (const unsigned char**)&binary, 0, &status );
@@ -891,7 +892,7 @@ cl_program b3OpenCLUtils_compileCLProgramFromString(cl_context clContext, cl_dev
 
         		flagsize = sizeof(char)*(strlen(additionalMacros) + strlen(flags) + 5);
 		compileFlags = (char*) malloc(flagsize);
-#ifdef _WIN32
+#ifdef _MSC_VER
 		sprintf_s(compileFlags,flagsize, "%s %s", flags, additionalMacros);
 #else
 		sprintf(compileFlags, "%s %s", flags, additionalMacros);
@@ -940,7 +941,7 @@ cl_program b3OpenCLUtils_compileCLProgramFromString(cl_context clContext, cl_dev
 
 				{
 					FILE* file=0;
-#ifdef _WIN32
+#ifdef _MSC_VER
 					if (fopen_s(&file,binaryFileName, "wb")!=0)
 						file=0;
 #else

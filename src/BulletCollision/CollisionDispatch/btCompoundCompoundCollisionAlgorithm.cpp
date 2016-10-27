@@ -15,6 +15,7 @@ subject to the following restrictions:
 */
 
 #include "btCompoundCompoundCollisionAlgorithm.h"
+#include "LinearMath/btQuickprof.h"
 #include "BulletCollision/CollisionDispatch/btCollisionObject.h"
 #include "BulletCollision/CollisionShapes/btCompoundShape.h"
 #include "BulletCollision/BroadphaseCollision/btDbvt.h"
@@ -112,10 +113,9 @@ struct	btCompoundCompoundLeafCallback : btDbvt::ICollide
 									btManifoldResult*	resultOut,
 									btHashedSimplePairCache* childAlgorithmsCache,
 									btPersistentManifold*	sharedManifold)
-		:m_compound0ColObjWrap(compound1ObjWrap),m_compound1ColObjWrap(compound0ObjWrap),m_dispatcher(dispatcher),m_dispatchInfo(dispatchInfo),m_resultOut(resultOut),
+		:m_numOverlapPairs(0),m_compound0ColObjWrap(compound1ObjWrap),m_compound1ColObjWrap(compound0ObjWrap),m_dispatcher(dispatcher),m_dispatchInfo(dispatchInfo),m_resultOut(resultOut),
 		m_childCollisionAlgorithmCache(childAlgorithmsCache),
-		m_sharedManifold(sharedManifold),
-		m_numOverlapPairs(0)
+		m_sharedManifold(sharedManifold)
 	{
 
 	}
@@ -125,6 +125,7 @@ struct	btCompoundCompoundLeafCallback : btDbvt::ICollide
 	
 	void		Process(const btDbvtNode* leaf0,const btDbvtNode* leaf1)
 	{
+		BT_PROFILE("btCompoundCompoundLeafCallback::Process");
 		m_numOverlapPairs++;
 
 

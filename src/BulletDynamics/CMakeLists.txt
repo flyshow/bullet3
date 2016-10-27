@@ -10,6 +10,7 @@ SET(BulletDynamics_SRCS
 	ConstraintSolver/btGearConstraint.cpp
 	ConstraintSolver/btGeneric6DofConstraint.cpp
 	ConstraintSolver/btGeneric6DofSpringConstraint.cpp
+	ConstraintSolver/btGeneric6DofSpring2Constraint.cpp
 	ConstraintSolver/btHinge2Constraint.cpp
 	ConstraintSolver/btHingeConstraint.cpp
 	ConstraintSolver/btPoint2PointConstraint.cpp
@@ -31,6 +32,8 @@ SET(BulletDynamics_SRCS
 	Featherstone/btMultiBodyJointLimitConstraint.cpp
 	Featherstone/btMultiBodyConstraint.cpp
 	Featherstone/btMultiBodyPoint2Point.cpp
+	Featherstone/btMultiBodyFixedConstraint.cpp
+	Featherstone/btMultiBodySliderConstraint.cpp
 	Featherstone/btMultiBodyJointMotor.cpp
 	MLCPSolvers/btDantzigLCP.cpp
 	MLCPSolvers/btMLCPSolver.cpp
@@ -50,6 +53,7 @@ SET(ConstraintSolver_HDRS
 	ConstraintSolver/btGearConstraint.h
 	ConstraintSolver/btGeneric6DofConstraint.h
 	ConstraintSolver/btGeneric6DofSpringConstraint.h
+	ConstraintSolver/btGeneric6DofSpring2Constraint.h
 	ConstraintSolver/btHinge2Constraint.h
 	ConstraintSolver/btHingeConstraint.h
 	ConstraintSolver/btJacobianEntry.h
@@ -87,6 +91,8 @@ SET(Featherstone_HDRS
 	Featherstone/btMultiBodyJointLimitConstraint.h
 	Featherstone/btMultiBodyConstraint.h
 	Featherstone/btMultiBodyPoint2Point.h
+	Featherstone/btMultiBodyFixedConstraint.h
+	Featherstone/btMultiBodySliderConstraint.h
 	Featherstone/btMultiBodyJointMotor.h
 )
 
@@ -96,7 +102,7 @@ SET(MLCPSolvers_HDRS
 	MLCPSolvers/btMLCPSolver.h
 	MLCPSolvers/btMLCPSolverInterface.h
 	MLCPSolvers/btPATHSolver.h
-	MLCPSolvers/btSolveProjectedGaussSeidel.h	
+	MLCPSolvers/btSolveProjectedGaussSeidel.h
 	MLCPSolvers/btLemkeSolver.h
 	MLCPSolvers/btLemkeAlgorithm.h
 )
